@@ -13,7 +13,9 @@ export default function Home() {
 
   return (
     <MainContainer label="Cardápio">
-      {cardapio.map(cardapioEntry => <CardapioEntry {...cardapioEntry} />)}
+      <div className="w-full flex flex-col md:w-3/5">
+        { cardapio.map(cardapioEntry => <CardapioEntry key={cardapioEntry.name} {...cardapioEntry} />) }
+      </div>
     </MainContainer>
   )
 }

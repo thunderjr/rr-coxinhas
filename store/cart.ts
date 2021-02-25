@@ -6,15 +6,15 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'ADD_PRODUCT':
-        return {
-          ...state,
-          count: state.count-1
-        }
-      default:
-        return state
-    }
+  switch (action.type) {
+    case 'ADD_PRODUCT':
+      return {
+        ...state,
+        count: state.count - 1
+      }
+    default:
+      return state
+  }
 }
 
 export const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware()))
