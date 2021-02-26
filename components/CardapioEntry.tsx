@@ -1,27 +1,50 @@
 import { useState } from 'react'
+import Image from 'next/image'
+import { useDispatch, useSelector } from 'react-redux'
 import * as CurrencyFormat from 'react-currency-format'
-import Image from 'next/Image'
 
+import Cart from '../types/Cart'
 import propTypes from './../types/CardapioEntry'
 
-function LineBreakText({ text, className }) {
-  return text.split('\n').map((x, i) => <p key={x + i} className={className}>{x}</p>)
-}
+const LineBreakText = ({ text, className }) => text.split('\n').map((x, i) => <p key={x + i} className={className}>{x}</p>)
 
 export default function CardapioEntry(props: propTypes) {
+  const dispatch = useDispatch()
   const [expanded, setExpanded] = useState(false)
+  
+  const searchInCart = (state: Cart) => state.products.find(x => x.id === props.id)
+  const itemIsInCart = !!useSelector(searchInCart)
+  const qtd = useSelector(searchInCart)?.qtd || 0
+
+  const clickHandler = e => {
+    if (e.target.name === 'addButton') {
+      dispatch({ type: 'ADD_PRODUCT', payload: { ...props, qtd: qtd === 0 ? 1 : qtd  } })
+      console.log(itemIsInCart)
+      return
+    }
+    setExpanded(!expanded)
+  }
 
   return (
     <>
-      <div onClick={() => setExpanded(!expanded)} className={`flex justify-between w-full self-center p-4 py-3 my-1 bg-black bg-opacity-40 ${ expanded ? 'rounded-t-lg' : 'rounded-lg'}`}>
-        <div className="flex flex-col">
-          <span className="font-semibold text-lg">{props.name}</span>
-          <CurrencyFormat className="-mt-2" value={props.price} displayType={'text'} thousandSeparator={'.'} decimalSeparator={','} prefix={'R$ '} />
+      <div onClick={clickHandler} className={`flex w-full items-center self-center p-4 py-3 my-1 bg-black bg-opacity-40 backdrop-blur ${ expanded ? 'rounded-t-md' : 'rounded-md'}`}>
+        <div className="flex items-center justify-center mr-4 w-8">
+          { !!props.imageProps.src && <Image {...props.imageProps} /> }
         </div>
+
+        <div className="flex flex-col">
+          <p>{props.name}</p>
+          <CurrencyFormat className="text-sm font-light" value={props.price} displayType={'text'} thousandSeparator={'.'} decimalSeparator={','} prefix={'R$ '} />
+        </div>
+
+        <button name="addButton" className="ml-auto px-4 h-8 rounded-full bg-black bg-opacity-10 backdrop-blur focus:outline-none text-sm">
+          Adicionar
+        </button>
       </div>
+
       { expanded && 
-          <div onClick={() => setExpanded(!expanded)} className="bg-black bg-opacity-30 -mt-1 mb-1 px-4 py-2 rounded-b-lg transition duration-500 ease-in-out">
-            <LineBreakText className="text-sm -my-1" text={props.description} />
+          <div onClick={clickHandler} className="bg-black bg-opacity-30 backdrop-blur -mt-1 mb-1 px-4 py-4 rounded-b-lg transition duration-500 ease-in-out">
+            <LineBreakText className="text-xs font-normal tracking-wide -my-1" text={props.description} />
           </div>
       }
     </>

@@ -1,16 +1,21 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-const initialState = {
-  count: 0,
+import Cart from '../types/Cart'
+import propTypes from './../types/CardapioEntry'
+
+const initialState: Cart = {
+  products: [],
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PRODUCT':
+      const _products = state.products
+      _products.push(action.payload)
       return {
         ...state,
-        count: state.count - 1
+        products: _products
       }
     default:
       return state
