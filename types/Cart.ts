@@ -1,7 +1,7 @@
 import CardapioEntry from './CardapioEntry'
 
 interface Product extends CardapioEntry {
-    qtd: Number
+    qtd: number
 }
 
 export default interface Cart {

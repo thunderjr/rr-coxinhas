@@ -11,12 +11,30 @@ const initialState: Cart = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PRODUCT':
-      const _products = state.products
-      _products.push(action.payload)
       return {
         ...state,
-        products: _products
+        products: [...state.products, action.payload]
       }
+    case 'INCREMENT_PRODUCT':
+      (() => {
+        const index = state.products.findIndex(x => x.id === action.payload)
+        const newArray = [...state.products]
+        newArray[index].qtd = newArray[index].qtd + 1
+        return {
+          ...state,
+          products: newArray
+        }
+      })()
+    case 'DECREMENT_PRODUCT':
+      (() => {
+        const index = state.products.findIndex(x => x.id === action.payload)
+        const newArray = [...state.products]
+        newArray[index].qtd = newArray[index].qtd - 1
+        return {
+          ...state,
+          products: newArray
+        }
+      })()
     default:
       return state
   }

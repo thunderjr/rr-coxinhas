@@ -9,8 +9,8 @@ import propTypes from './../types/CardapioEntry'
 const LineBreakText = ({ text, className }) => text.split('\n').map((x, i) => <p key={x + i} className={className}>{x}</p>)
 
 export default function CardapioEntry(props: propTypes) {
-  const dispatch = useDispatch()
   const [expanded, setExpanded] = useState(false)
+  const dispatch = useDispatch()
   
   const searchInCart = (state: Cart) => state.products.find(x => x.id === props.id)
   const itemIsInCart = !!useSelector(searchInCart)
@@ -19,7 +19,7 @@ export default function CardapioEntry(props: propTypes) {
   const clickHandler = e => {
     if (e.target.name === 'addButton') {
       dispatch({ type: 'ADD_PRODUCT', payload: { ...props, qtd: qtd === 0 ? 1 : qtd  } })
-      console.log(itemIsInCart)
+      setExpanded(true)
       return
     }
     setExpanded(!expanded)
@@ -44,7 +44,15 @@ export default function CardapioEntry(props: propTypes) {
 
       { expanded && 
           <div onClick={clickHandler} className="bg-black bg-opacity-30 backdrop-blur -mt-1 mb-1 px-4 py-4 rounded-b-lg transition duration-500 ease-in-out">
-            <LineBreakText className="text-xs font-normal tracking-wide -my-1" text={props.description} />
+            <div className="flex justify-between">
+              <div><LineBreakText className="text-xs font-normal tracking-wide -my-1" text={props.description} /></div>
+              { itemIsInCart && 
+                <div className="flex flex-col">
+                  <span className="text-sm">Quantidade</span>
+                  <input className="w-8" defaultValue={qtd} type="number" />
+                </div>
+              }
+            </div>
           </div>
       }
     </>
