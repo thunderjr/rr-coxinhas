@@ -22,6 +22,8 @@ export default function CardapioEntry(props: propTypes) {
       setExpanded(true)
       return
     }
+    if (Array.from(e.target.classList).includes('not-triggable')) return;
+    
     setExpanded(!expanded)
   }
 
@@ -45,11 +47,21 @@ export default function CardapioEntry(props: propTypes) {
       { expanded && 
           <div onClick={clickHandler} className="bg-black bg-opacity-30 backdrop-blur -mt-1 mb-1 px-4 py-4 rounded-b-lg transition duration-500 ease-in-out">
             <div className="flex justify-between">
-              <div><LineBreakText className="text-xs font-normal tracking-wide -my-1" text={props.description} /></div>
+              <div className="flex flex-col "><LineBreakText className="text-xs font-normal tracking-wide" text={props.description} /></div>
+
               { itemIsInCart && 
                 <div className="flex flex-col">
-                  <span className="text-sm">Quantidade</span>
-                  <input className="w-8" defaultValue={qtd} type="number" />
+                  <span className="text-sm self-center">Quantidade</span>
+                  
+                  <div className="flex my-2">
+                    <button name="decrementButton not-triggable" className="flex items-center" onClick={e => dispatch({ type: 'DECREMENT_PRODUCT', payload: props.id })}>
+                      <Image src="/minus-circle.svg" height={20} width={20} className="filter-invert not-triggable" />
+                    </button>
+                    <input className="w-8 mx-2 not-triggable text-black text-center" onChange={e => console.log(e)} value={qtd} type="text" />
+                    <button name="incrementButton not-triggable" className="flex items-center" onClick={e => dispatch({ type: 'INCREMENT_PRODUCT', payload: props.id })}>
+                      <Image src="/plus-circle.svg" height={20} width={20} className="filter-invert not-triggable" />
+                    </button>
+                  </div>
                 </div>
               }
             </div>

@@ -16,20 +16,20 @@ const reducer = (state = initialState, action) => {
         products: [...state.products, action.payload]
       }
     case 'INCREMENT_PRODUCT':
-      (() => {
+      return (() => {
         const index = state.products.findIndex(x => x.id === action.payload)
         const newArray = [...state.products]
-        newArray[index].qtd = newArray[index].qtd + 1
+        Object.assign(newArray[index], { qtd: state.products[index].qtd + 1 })
         return {
           ...state,
           products: newArray
         }
       })()
     case 'DECREMENT_PRODUCT':
-      (() => {
+      return (() => {
         const index = state.products.findIndex(x => x.id === action.payload)
         const newArray = [...state.products]
-        newArray[index].qtd = newArray[index].qtd - 1
+        Object.assign(newArray[index], { qtd: state.products[index].qtd - 1 })
         return {
           ...state,
           products: newArray
