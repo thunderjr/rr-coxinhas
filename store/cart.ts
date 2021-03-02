@@ -35,6 +35,11 @@ const reducer = (state = initialState, action) => {
           products: newArray
         }
       })()
+    case 'SET_ADDRESS':
+      return { 
+        ...state,
+        address: action.payload
+      }
     default:
       return state
   }
