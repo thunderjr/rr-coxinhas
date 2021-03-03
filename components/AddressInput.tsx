@@ -39,15 +39,15 @@ export default function AddressInput({ setAddr }) {
     <Autocomplete
       getItemValue={item => item}
       items={items}
-      renderItem={(item, isHighlighted) => 
-        <div key={'addr-' + items.findIndex(x => x === item)} className={`bg-${isHighlighted ? 'gray-200' : 'white'}`}>
-          { item }
-        </div>
-      }
       value={query}
       onChange={e => setQuery(e.target.value)}
       onSelect={val => setAddr(val)}
       selectOnBlur={true}
+      renderItem={(item, isHighlighted) =>
+        <div key={'addr-' + items.findIndex(x => x === item)} className={`bg-${isHighlighted ? 'gray-200' : 'white'}`}>
+          { item }
+        </div>
+      }
     />
   )
 }
