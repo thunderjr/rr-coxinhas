@@ -12,11 +12,11 @@ export default function AddressInput({ setAddr }) {
   useEffect(() => {
     async function viaCEPRequest(query) {
       try {
-        const { data } = await axios.get(`https://viacep.com.br/ws/SP/Sao%20Paulo/${query.split(' ').join('+')}/json`)
+        const { data } = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://viacep.com.br/ws/SP/Sao%20Paulo/${query.split(' ').join('+')}/json`)}`)
         setItems(
           Array.from(
             new Set(
-              data
+              JSON.parse(data.contents)
                 .map(x => x.logradouro)
                 .filter(x => {
                   const array = x.split(' ')
