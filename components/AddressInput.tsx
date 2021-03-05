@@ -3,20 +3,21 @@ import Autocomplete from 'react-autocomplete'
 import axios from 'axios'
 import useDebounce from './../hooks/useDebounce'
 
-export default function AddressInput({ setAddr }) {
+export default function AddressInput({ setAddr, value }) {
   const [query, setQuery] = useState('')
   const [items, setItems] = useState([])
 
-  const debouncedQuery = useDebounce(query, 400)
+  const debouncedQuery = useDebounce(query, 200)
 
   useEffect(() => {
     async function viaCEPRequest(query) {
       try {
-        const { data } = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://viacep.com.br/ws/SP/Sao%20Paulo/${query.split(' ').join('+')}/json`)}`)
+        const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://viacep.com.br/ws/SP/Sao%20Paulo/${query.split(' ').join('+')}/json`)}`)
+        const data = JSON.parse(response.data.contents)
         setItems(
           Array.from(
             new Set(
-              JSON.parse(data.contents)
+              data
                 .map(x => x.logradouro)
                 .filter(x => {
                   const array = x.split(' ')
@@ -26,14 +27,18 @@ export default function AddressInput({ setAddr }) {
           )
         )
       } catch(e) {
-        console.log('axios error', e)
+        console.log('ADDR INPUT: request error')
       }
     }
     
-    if (debouncedQuery.length > 3) {
+    if ((debouncedQuery || '').length > 3) {
       viaCEPRequest(debouncedQuery)
     }
   }, [debouncedQuery])
+
+  useEffect(() => {
+    setQuery(value)
+  }, [value])
 
   return (
     <Autocomplete
@@ -43,8 +48,11 @@ export default function AddressInput({ setAddr }) {
       onChange={e => setQuery(e.target.value)}
       onSelect={val => setAddr(val)}
       selectOnBlur={true}
+      renderInput={props => 
+        <input {...props} className="w-full" />
+      }
       renderItem={(item, isHighlighted) =>
-        <div key={'addr-' + items.findIndex(x => x === item)} className={`bg-${isHighlighted ? 'gray-200' : 'white'}`}>
+        <div key={'addr-' + items.findIndex(x => x === item)} className={`bg-${isHighlighted ? 'gray-200' : 'white'} p-2`}>
           { item }
         </div>
       }
