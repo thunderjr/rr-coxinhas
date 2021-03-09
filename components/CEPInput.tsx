@@ -11,7 +11,9 @@ export default function CEPInput({ setBairro }) {
   useEffect(() => {
     async function viaCEPRequest(query) {
       try {
-        const data = await CEPSearch(query)
+        const res = await CEPSearch(query)
+        const data = JSON.parse(res.data.contents)
+        
         if (Array.isArray(data)) {
           dispatch({
             type: 'SET_ADDRESS',

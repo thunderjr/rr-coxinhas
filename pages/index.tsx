@@ -9,7 +9,7 @@ import useTotal from '../hooks/useTotal'
 
 import AddressInput from '../components/AddressInput'
 import CardapioEntry from './../components/CardapioEntry'
-import CEPInput from '../components/CEPInput'
+// import CEPInput from '../components/CEPInput'
 import Divider from './../components/Divider'
 import Label from '../components/Label'
 import MainContainer from './../components/MainContainer'
@@ -27,8 +27,8 @@ export default function Home() {
   const [localBairro, setLocalBairro] = useState('')
   const [localCidade, setLocalCidade] = useState('Sao Paulo')
 
-  const [showCEP, setCEP] = useState(false)
-  const toggleCEP = e => { e.preventDefault(); setCEP(!showCEP) }
+  // const [showCEP, setCEP] = useState(false)
+  // const toggleCEP = e => { e.preventDefault(); setCEP(!showCEP) }
 
   useEffect(() => {
     dispatch({
@@ -57,13 +57,13 @@ export default function Home() {
 
         <div className="px-2">          
           <div className="space-y-2">
-            { showCEP && 
+            {/* { showCEP && 
               <div className="flex flex-col pb-4">
                 <Label>CEP</Label>
                 <CEPInput setBairro={setLocalBairro} />
               </div>
             }
-            
+             */}
             <div className="flex flex-col pb-2">
               <Label>Cidade</Label>
               <select className="flex-1" value={storeCidade} onChange={e => setLocalCidade(e.target.value)}>

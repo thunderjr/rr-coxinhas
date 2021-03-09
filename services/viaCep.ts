@@ -20,8 +20,7 @@ export function addressSearch(city: string, query: string) {
 }
 
 export async function CEPSearch(cep: string) {
-  const res = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(
+  return axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(
     `https://viacep.com.br/ws/${cep}/json`
   )}`)
-  return JSON.parse(res.data.contents)
 }
