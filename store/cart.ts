@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import Cart from '../types/Cart'
-import propTypes from './../types/CardapioEntry'
+import Cart, { AddressData } from '../types/Cart'
 
 const initialState: Cart = {
   products: [],
+  address: {} as AddressData
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,6 +26,8 @@ const reducer = (state = initialState, action) => {
         }
       })()
     case 'DECREMENT_PRODUCT':
+      // SHOULD REMOVE PRODUCT IF QTD IS 0
+
       return (() => {
         const index = state.products.findIndex(x => x.id === action.payload)
         const newArray = [...state.products]
@@ -38,7 +40,10 @@ const reducer = (state = initialState, action) => {
     case 'SET_ADDRESS':
       return { 
         ...state,
-        address: action.payload
+        address: {
+          ...state.address,
+          ...action.payload
+        }
       }
     default:
       return state

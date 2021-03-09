@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import useTotal from '../hooks/useTotal'
 import cardapio from '../services/cardapio'
 import Cart from '../types/Cart'
+import cities from './../cities.json'
+import useTotal from '../hooks/useTotal'
 
-import Divider from './../components/Divider'
-import MainContainer from './../components/MainContainer'
-import CardapioEntry from './../components/CardapioEntry'
 import AddressInput from '../components/AddressInput'
+import CardapioEntry from './../components/CardapioEntry'
 import CEPInput from '../components/CEPInput'
+import Divider from './../components/Divider'
+import Label from '../components/Label'
+import MainContainer from './../components/MainContainer'
 
 export default function Home() {
   const dispatch = useDispatch()
   const cart = useSelector((state: Cart) => state)
   const total = useTotal(cart)
+  
+  const addrData = useSelector((state: Cart) => state.address)
 
-  const [localAddr, setLocalAddr] = useState('')
+  const [localNum, setLocalNum] = useState('')
+  const [localComplemento, setLocalComp] = useState('')
+  const [localBairro, setLocalBairro] = useState('')
+  const [localCidade, setLocalCidade] = useState('Sao Paulo')
+
   const [showCEP, setCEP] = useState(false)
   const toggleCEP = e => { e.preventDefault(); setCEP(!showCEP) }
 
@@ -24,10 +32,13 @@ export default function Home() {
     dispatch({
       type: 'SET_ADDRESS',
       payload: {
-        // SET FOR FULL ADDRESS
+        numero: localNum,
+        complemento: localComplemento,
+        bairro: localBairro,
+        cidade: localCidade
       }
     })
-  }, [localAddr])
+  }, [localNum, localComplemento, localCidade])
 
   return (
     <MainContainer>
@@ -43,32 +54,44 @@ export default function Home() {
         <button className="text-white font-semibold self-center px-4 py-2 bg-black bg-opacity-30 rounded-full" onClick={toggleCEP}>{ showCEP ? 'Remover CEP' : 'Pesquisar por CEP' }</button>
 
         <div className="px-2">          
-          <div className="space-y-1">
+          <div className="space-y-2">
             { showCEP && 
               <div className="flex flex-col pb-4">
-                <h2 className="text-white text-lg tracking-wide font-normal font-akaya">CEP:</h2>
-                <CEPInput setAddr={setLocalAddr} />
+                <Label>CEP</Label>
+                <CEPInput />
               </div>
             }
-
-            <div className="flex flex-col">
-              <h2 className="text-white text-lg tracking-wide font-normal font-akaya">Endereço:</h2>
-              <AddressInput value={localAddr} setAddr={setLocalAddr} />
+            
+            <div className="flex flex-col pb-2">
+              <Label>Cidade</Label>
+              <select className="flex-1" value={addrData.cidade} onChange={e => setLocalCidade(e.target.value)}>
+                { Array.from(cities).map((city, i) =>
+                  <option value={city} key={`city-${i}`}>{city}</option>
+                )}
+              </select>
             </div>
 
             <div className="flex flex-col">
-              <h2 className="text-white text-lg tracking-wide font-normal font-akaya">Número:</h2>
-              <input type="text" className="flex-1" onChange={() => {}} />
+              <Label>Endereço</Label>
+              <AddressInput />
+            </div>
+            
+            <div className="flex flex-col pb-2">
+              <Label>Número</Label>
+              <input type="text" className="flex-1" onChange={e => setLocalNum(e.target.value)} />
+            </div>
+            
+            <div className="flex flex-col">
+              <Label>Bairro</Label>
+              <input type="text" className="flex-1" value={addrData.bairro} onChange={e => setLocalBairro(e.target.value)} />
             </div>
 
             <div className="flex flex-col">
-              <h2 className="text-white text-lg tracking-wide font-normal font-akaya">Complemento:</h2>
-              <input type="text" className="flex-1" onChange={() => {}} />
+              <Label>Complemento</Label>
+              <input type="text" className="flex-1" onChange={e => setLocalComp(e.target.value)} />
             </div>
           </div>
         </div>
-        
-        <h3 className="text-white">{total}</h3>
       </div>
 
       <button className="bg-white text-red-600 border-red-300 border-2 py-2 px-8 mt-6 w-7/12 md:w-3/12 focus:outline-none font-bold rounded-full tracking-wide">AGENDAR PEDIDO</button>
