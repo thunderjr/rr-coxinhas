@@ -53,7 +53,7 @@ export default function Home() {
       <Divider label="Entrega" className="mt-10" />
 
       <div id="checkout" className="flex flex-col text-black mt-3 px-2 w-full md:w-2/4">
-        <button className="text-white font-semibold self-center px-4 py-2 bg-black bg-opacity-30 rounded-full" onClick={toggleCEP}>{ showCEP ? 'Remover CEP' : 'Pesquisar por CEP' }</button>
+        {/* <button className="text-white font-semibold self-center px-4 py-2 bg-black bg-opacity-30 rounded-full" onClick={toggleCEP}>{ showCEP ? 'Remover CEP' : 'Pesquisar por CEP' }</button> */}
 
         <div className="px-2">          
           <div className="space-y-2">
