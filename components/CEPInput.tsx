@@ -4,7 +4,7 @@ import InputMask from 'react-input-mask'
 
 import { CEPSearch } from './../services/viaCep'
 
-export default function CEPInput() {
+export default function CEPInput({ setBairro }) {
   const dispatch = useDispatch()
   const [val, setVal] = useState('')
 
@@ -17,11 +17,12 @@ export default function CEPInput() {
             type: 'SET_ADDRESS',
             payload: {
               endereco: data.shift()?.logradouro,
-              bairro: data.shift().bairro,
+              bairro: data.shift()?.bairro,
               cidade: data.shift()?.localidade,
               cep: query
             }
           })
+          setBairro(data.shift()?.bairro)
           return
         }
 
@@ -34,6 +35,7 @@ export default function CEPInput() {
             cep: query
           }
         })
+        setBairro(data.bairro)
       } catch(e) {
         console.log('CEP INPUT: request error')
       }

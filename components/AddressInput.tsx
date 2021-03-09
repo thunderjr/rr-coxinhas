@@ -25,7 +25,7 @@ function sanitizeResults(results : ViaCEPEntry[]) : ViaCEPEntry[] {
   return uniques
 }
 
-export default function AddressInput() {
+export default function AddressInput({ setBairro }) {
   const dispatch = useDispatch()
 
   const [query, setQuery] = useState('')
@@ -44,6 +44,7 @@ export default function AddressInput() {
         bairro: item.bairro,
       }
     })
+    setBairro(item.bairro)
   }
 
   useEffect(() => {
@@ -54,10 +55,8 @@ export default function AddressInput() {
     async function viaCEPRequest(query) {
       try {
         const res = await addressSearch(storeCity, query)
-        console.log(res.data)
         setItems(sanitizeResults(JSON.parse(res.data.contents)))
       } catch(e) {
-        console.log(e)
         console.log('ADDR INPUT: request error')
       }
     }

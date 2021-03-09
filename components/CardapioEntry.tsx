@@ -8,6 +8,12 @@ import propTypes from './../types/CardapioEntry'
 
 const LineBreakText = ({ text, className }) => text.split('\n').map((x, i) => <p key={x + i} className={className}>{x}</p>)
 
+const AddRemoveButton = ({ itemIsInCart }) => {
+  return (
+    <button name={itemIsInCart ? "removeButton" : "addButton"} className="ml-auto px-4 h-8 rounded-full bg-black bg-opacity-10 backdrop-blur focus:outline-none text-sm">{ itemIsInCart ? "Remover" : "Adicionar" }</button>
+  )
+}
+
 export default function CardapioEntry(props: propTypes) {
   const [expanded, setExpanded] = useState(false)
   const dispatch = useDispatch()
@@ -22,6 +28,13 @@ export default function CardapioEntry(props: propTypes) {
       setExpanded(true)
       return
     }
+
+    if (e.target.name === 'removeButton') {
+      dispatch({ type: 'REMOVE_PRODUCT', payload: props.id })
+      setExpanded(false)
+      return
+    }
+
     if (Array.from(e.target.classList).includes('not-triggable')) return;
     
     setExpanded(!expanded)
@@ -39,9 +52,7 @@ export default function CardapioEntry(props: propTypes) {
           <CurrencyFormat className="text-sm font-light" value={props.price} displayType={'text'} thousandSeparator={'.'} decimalSeparator={','} prefix={'R$ '} />
         </div>
 
-        <button name="addButton" className="ml-auto px-4 h-8 rounded-full bg-black bg-opacity-10 backdrop-blur focus:outline-none text-sm">
-          Adicionar
-        </button>
+        <AddRemoveButton itemIsInCart={itemIsInCart} />
       </div>
 
       { expanded && 

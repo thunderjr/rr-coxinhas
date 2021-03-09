@@ -1,6 +1,6 @@
 import CardapioEntry from './CardapioEntry'
 
-interface Product extends CardapioEntry {
+export interface Product extends CardapioEntry {
     qtd: number
 }
 

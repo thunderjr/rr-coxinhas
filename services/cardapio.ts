@@ -10,7 +10,7 @@ const cardapio: CardapioEntry[] = [
       height: 32,
       width: 25
     },
-    price: 24.99,
+    price: 26.99,
   },
   {
     id: 1,
@@ -21,7 +21,7 @@ const cardapio: CardapioEntry[] = [
       height: 32,
       width: 25
     },
-    price: 13.99,
+    price: 15.99,
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const cardapio: CardapioEntry[] = [
       height: 32,
       width: 25
     },
-    price: 23.99,
+    price: 24.99,
   },
   {
     id: 3,
@@ -43,7 +43,7 @@ const cardapio: CardapioEntry[] = [
       height: 32,
       width: 25
     },
-    price: 11.99,
+    price: 13.99,
   },
   {
     id: 4,

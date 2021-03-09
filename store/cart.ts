@@ -15,9 +15,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         products: [...state.products, action.payload]
       }
+    case 'REMOVE_PRODUCT':
+      return {
+        ...state,
+        products: state.products.filter(x => x.id !== action.payload)
+      }
     case 'INCREMENT_PRODUCT':
       return (() => {
         const index = state.products.findIndex(x => x.id === action.payload)
+        
+        if (state.products[index].qtd + 1 === 10) {
+          return state
+        }
+
         const newArray = [...state.products]
         Object.assign(newArray[index], { qtd: state.products[index].qtd + 1 })
         return {
@@ -26,10 +36,16 @@ const reducer = (state = initialState, action) => {
         }
       })()
     case 'DECREMENT_PRODUCT':
-      // SHOULD REMOVE PRODUCT IF QTD IS 0
-
       return (() => {
         const index = state.products.findIndex(x => x.id === action.payload)
+        
+        if (state.products[index].qtd - 1 === 0) {
+          return {
+            ...state,
+            products: state.products.filter(x => x.id !== action.payload)
+          }
+        }
+
         const newArray = [...state.products]
         Object.assign(newArray[index], { qtd: state.products[index].qtd - 1 })
         return {
