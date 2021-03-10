@@ -5,7 +5,8 @@ import Cart, { AddressData } from '../types/Cart'
 
 const initialState: Cart = {
   products: [],
-  address: {} as AddressData
+  address: {} as AddressData,
+  payment: 'Dinheiro'
 }
 
 const reducer = (state = initialState, action) => {
@@ -60,6 +61,11 @@ const reducer = (state = initialState, action) => {
           ...state.address,
           ...action.payload
         }
+      }
+    case 'SET_PAYMENT':
+      return {
+        ...state,
+        payment: action.payload
       }
     default:
       return state

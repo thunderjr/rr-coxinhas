@@ -26,7 +26,7 @@ export default function Home() {
   const [localComplemento, setLocalComp] = useState('')
   const [localBairro, setLocalBairro] = useState('')
   const [localCidade, setLocalCidade] = useState('Sao Paulo')
-
+  const [localPagamento, setLocalPagamento] = useState('Dinheiro')
   // const [showCEP, setCEP] = useState(false)
   // const toggleCEP = e => { e.preventDefault(); setCEP(!showCEP) }
 
@@ -42,8 +42,15 @@ export default function Home() {
     })
   }, [localBairro, localNum, localComplemento, localCidade])
 
+  useEffect(() => {
+    dispatch({
+      type: 'SET_PAYMENT',
+      payload: localPagamento
+    })
+  }, [localPagamento])
+
   return (
-    <MainContainer>      
+    <MainContainer>
       <Divider label="Cardápio" />
       
       <div className="w-full md:w-3/5 flex flex-col">
@@ -93,8 +100,17 @@ export default function Home() {
               <Label>Complemento</Label>
               <input type="text" className="flex-1" onChange={e => setLocalComp(e.target.value)} />
             </div>
+
+            <div className="flex flex-col">
+              <Label>Meio de Pagamento</Label>
+              <select className="flex-1" value={localPagamento} onChange={e => setLocalPagamento(e.target.value)}>
+                <option value="Cartão">Cartão</option>
+                <option value="Dinheiro">Dinheiro</option>
+              </select>
+            </div>
           </div>
         </div>
+
         {/* <button className="bg-white text-red-600 border-red-300 border-2 py-2 px-8 mt-6 w-7/12 md:w-3/12 focus:outline-none font-bold rounded-full tracking-wide">AGENDAR PEDIDO</button> */}
         <button onClick={() => messageSender('NOW', cart)} className="bg-gradient-to-r from-green-400 via-green-500 to-green-400 text-white mt-6 py-2 px-8 w-9/12 md:w-5/12 focus:outline-none font-bold rounded-full tracking-wide self-center">
           FINALIZAR PEDIDO

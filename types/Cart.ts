@@ -15,5 +15,6 @@ export interface AddressData {
 
 export default interface Cart {
     products: Product[],
-    address?: AddressData
+    address?: AddressData,
+    payment: string
 }
